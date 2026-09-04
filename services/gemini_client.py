@@ -10,8 +10,7 @@ GEMINI_MODEL = 'gemini-3.6-flash'
 
 class GeminiClient:
     def __init__(self):
-        # The key is read from the environment (loaded from .env by python-dotenv above).
-        # It must never be hard-coded here. See .env.example for the expected variable name.
+        
         self.api_key = os.environ.get('GEMINI_API_KEY')
 
     def _get_client(self):
@@ -30,9 +29,7 @@ class GeminiClient:
                 contents=prompt,
             )
         except Exception as e:
-            # The google-genai SDK's exception types aren't part of our reference material,
-            # so we wrap whatever it raises into our own GeminiAPIError with the original
-            # message attached, rather than letting an unrelated exception type crash the app.
+            
             raise GeminiAPIError(f'Gemini request failed: {e}')
 
         if not response or not getattr(response, 'text', None):

@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
-# Basic recommended action shown alongside each threat type, per project rule 17
-# (kept centralized and configurable) and rule 4's "give basic recommended actions".
+
 RECOMMENDED_ACTIONS = {
     'Heavy Rain': 'Consider delaying planting and ensuring good field drainage to prevent waterlogging.',
     'Heatwave': 'Consider providing shade or mulching, and watering more frequently to reduce heat stress.',
@@ -94,8 +93,7 @@ def detect_weather_threats(daily_forecast, crop):
     return warnings
 
 
-# How many upcoming days count as "the next few days" for planting suitability checks.
-# Kept as one named constant so it stays easy to find/tune (rule 17 style).
+
 NEAR_TERM_DAYS = 5
 
 
@@ -192,7 +190,7 @@ def estimate_irrigation_need(daily_forecast, crop, days=NEAR_TERM_DAYS):
     # ASSUMPTION: crop.min_rainfall_mm is a whole-season total requirement (see models/crop.py),
     # not a daily figure. We derive a rough average daily need from it as a simplification.
     # This is intentionally a category-level estimate, not a precise irrigation quantity
-    # (see project rule 15).
+
     daily_need_mm = crop.min_rainfall_mm / crop.growth_days
     avg_daily_rain = sum(window['precipitation_sum']) / total_days
 
@@ -211,11 +209,6 @@ def estimate_irrigation_need(daily_forecast, crop, days=NEAR_TERM_DAYS):
     }
 
 
-# ASSUMPTION (rule 31): these calendar-event offsets, expressed as a fraction of the crop's
-# total growth_days, are not defined anywhere in the provided reference files or instructions.
-# They are a reasonable general-purpose spread of farming activities across a growing season
-# and MUST be reviewed against real agronomic guidance later. Kept simple per rule 20 (a
-# straightforward timeline, not a complicated calendar system).
 CALENDAR_EVENT_OFFSETS = [
     ('Planting', 0.0),
     ('First weeding', 0.15),

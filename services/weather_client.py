@@ -96,26 +96,6 @@ class WeatherClient:
             'condition': describe_weather_code(current.get('weather_code')),
         }
 
-    def get_hourly_forecast(self, data=None):
-        if data is None:
-            data = self.get_forecast()
-
-        hourly = data.get('hourly', {})
-
-        if 'time' not in hourly:
-            raise WeatherAPIError('hourly forecast data is not available in the weather response')
-
-        codes = hourly.get('weather_code', [])
-
-        return {
-            'time': hourly.get('time', []),
-            'temperature': hourly.get('temperature_2m', []),
-            'precipitation': hourly.get('precipitation', []),
-            'precipitation_probability': hourly.get('precipitation_probability', []),
-            'soil_moisture': hourly.get('soil_moisture_0_1cm', []),
-            'condition': [describe_weather_code(c) for c in codes],
-        }
-
     def get_daily_forecast(self, data=None):
         if data is None:
             data = self.get_forecast()

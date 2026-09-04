@@ -10,36 +10,19 @@ class Crop:
         self.growth_days = growth_days
         self.common_pests = common_pests
         self.common_diseases = common_diseases
-        # weather threat thresholds, per crop (see rule 17: configurable, not scattered in UI)
+        # weather threat thresholds, per crop 
         self.heavy_rain_mm = heavy_rain_mm            # daily rainfall (mm) that counts as "heavy rain" for this crop
         self.heatwave_temp_c = heatwave_temp_c        # daily max temp (C) that counts as a "heatwave" for this crop
         self.dry_spell_days = dry_spell_days           # consecutive dry days needed to flag a "dry spell"
         self.dry_spell_rain_mm = dry_spell_rain_mm      # daily rainfall (mm) below which a day counts as "dry"
         self.cold_temp_c = cold_temp_c                  # daily min temp (C) at or below which counts as an extreme-cold risk for this crop
-        # True when this crop isn't in our known-crop database and is using generic fallback
-        # numbers instead of numbers researched for this specific crop. The UI should tell the
-        # user when this is the case, per rule 32 (don't present guidance as more precise than
-        # the underlying data supports).
+     
         self.is_generic = is_generic
 
     def temp_in_range(self, temp):
         return self.min_temp <= temp <= self.max_temp
 
-    def rainfall_in_range(self, rainfall_mm):
-        return self.min_rainfall_mm <= rainfall_mm <= self.max_rainfall_mm
 
-    def summary(self):
-        print(f'{self.name}: ideal temp {self.min_temp}-{self.max_temp}C, ideal rainfall {self.min_rainfall_mm}-{self.max_rainfall_mm}mm, grows in about {self.growth_days} days')
-
-
-# ASSUMPTION (flagged per project rule 31): exact temp/rainfall thresholds, growth durations, and
-# weather-threat thresholds (heavy rain / heatwave / dry spell / extreme cold) are not defined
-# anywhere in the provided reference files or instructions. These are reasonable agronomic
-# placeholder values for Nigeria-relevant crops and MUST be reviewed/adjusted later, ideally
-# against a real agricultural reference source. cold_temp_c is set a few degrees below each
-# crop's min_temp, representing a genuinely dangerous cold snap rather than merely
-# below-ideal weather. They live here as named attributes so they stay centralized and easy
-# to tune, per rule 17 (thresholds should be configurable, not scattered through UI code).
 maize = Crop('Maize', 18, 32, 500, 800, 90,
               ['fall armyworm', 'stem borer'], ['maize streak virus', 'leaf blight'],
               heavy_rain_mm=40, heatwave_temp_c=36, dry_spell_days=10, dry_spell_rain_mm=1, cold_temp_c=12)
@@ -192,7 +175,7 @@ CROP_ALIASES = {
     'sweet potatoes': 'Sweet Potato',
 }
 
-# ASSUMPTION (rule 31): generic fallback thresholds used for any crop name that isn't in
+# generic fallback thresholds used for any crop name that isn't in
 # SUPPORTED_CROPS above. These are broad, rough-average values across common tropical food
 # crops, deliberately not tuned to any specific crop. Any advice generated using them is less
 # reliable than advice for a known crop, and the UI flags this via Crop.is_generic.
